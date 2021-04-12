@@ -10,10 +10,17 @@ export class TransactionsController {
     return res.status(200).json(result);
   }
 
-  async showTransation(req: Request, res: Response): Promise<Response> {
-    const id = parseInt(req.params.transationId)
+  async getTransations(req: Request, res: Response): Promise<Response> {
+
     const transactions = new Transations();
-    const result = await transactions.getTransaction(id);
+    const result = await transactions.getTransactions();
+    return res.status(200).json(result);
+  }
+
+  async getEspecificTransactions(req: Request, res: Response): Promise<Response> {
+    const param = req.params.param;
+    const transactions = new Transations();
+    const result = await transactions.getEspecificTransactions(param);
     return res.status(200).json(result);
   }
 

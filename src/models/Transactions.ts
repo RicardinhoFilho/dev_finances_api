@@ -2,33 +2,35 @@ import { connect } from "../database";
 import { Transation } from "../interfaces/transation.interface";
 
 export class Transations {
-  async getTransactions(option?: string): Promise<object|string> {
+  async getTransactions(): Promise<object | string> {
+    const teste = "2";
     try {
       const conn = await connect();
-      if(option?.length != 0){
-        const data = await conn.query("SELECT * FROM finances ORDER BY ?" , option);
-      }else{
-        const data = await conn.query("SELECT * FROM finances");
-      }
-      
+      const data = await conn.query("SELECT * FROM finances");
       return data[0];
     } catch (err) {
       return err.message;
     }
   }
 
-  async getTransaction(id: number): Promise<object|string> {
+  async getEspecificTransactions(param: string) {
     try {
-    const conn = await connect();
-    const data = await conn.query("SELECT * FROM finances WHERE id=?", id);
+      let sql: string;
+      console.log(param);
+      if (param.charCodeAt(1) != 0) {
+        sql = `SELECT * FROM finances ORDER BY ${param}`;
+      } else {
+        sql = `SELECT * FROM finances WHERE id=${param}`;
+      }
 
-    return data[0];
-    }catch (err) {
-        return err.message;
+      const conn = await connect();
+      const data = await conn.query(sql);
+
+      return data[0];
+    } catch (err) {
+      return err.message;
     }
   }
-
-
 
   async postTransaction(newTransaction: Transation): Promise<String> {
     try {
