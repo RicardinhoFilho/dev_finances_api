@@ -32,6 +32,6 @@ export class App{
 
     routes(){
         this.app.use('/',IndexRoutes);
-        this.app.use('/finances',FinancesRoutes);
+        this.app.use('/transactions',FinancesRoutes);
     }
 }

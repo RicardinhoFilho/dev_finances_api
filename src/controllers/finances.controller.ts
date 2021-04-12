@@ -1,28 +1,52 @@
 import { Request, Response } from "express";
-import { transalateData } from "../utils/translateData";
+import { translateData } from "../utils/translateData";
+import { verifyUpdates } from "../utils/verifyUpdates";
 import { Transations } from "../models/Transactions";
 
 export class TransactionsController {
-  
-async showTransations(req: Request, res: Response): Promise<Response> {
-  const  transactions = new Transations();
-    const result = await transactions.getTransations();
-    return res.status(200).json(result[0]);
+  async showTransations(req: Request, res: Response): Promise<Response> {
+    const transactions = new Transations();
+    const result = await transactions.getTransactions();
+    return res.status(200).json(result);
   }
 
+  async showTransation(req: Request, res: Response): Promise<Response> {
+    const id = parseInt(req.params.transationId)
+    const transactions = new Transations();
+    const result = await transactions.getTransaction(id);
+    return res.status(200).json(result);
+  }
 
-  async postTransation(
-       req: Request,
-       res: Response
-      ) {
-       req.body._date = transalateData(req.body._date);
-       req.body._value = parseFloat(req.body._value);
-        
-       const transactions = new Transations();
-       const result = await transactions.postTransaction(req.body);
-      
-       return  res.status(200).json(result);
-     }
+  async postTransation(req: Request, res: Response) {
+    req.body._date = translateData(req.body._date);
+    req.body._value = parseFloat(req.body._value);
+
+    const transactions = new Transations();
+    const result = await transactions.postTransaction(req.body);
+
+    return res.status(200).json(result);
+  }
+
+  async deleteTransation(req: Request, res: Response) {
+    const id: Number = parseInt(req.params.transationId);
+    const transactions = new Transations();
+
+    const result = await transactions.deleteTransaction(id);
+
+    res.status(200).json(result);
+  }
+
+  async updateTransation(req: Request, res: Response) {
+    const id: Number = parseInt(req.params.transationId);
+    const transactions = new Transations();
+    const updatedTransaction = req.body;
+    const validupdatedTransaction = verifyUpdates(updatedTransaction);
+
+    const result = await transactions.updateTransation(id, updatedTransaction );
+
+    return res.status(200).json(result);
+
+  }
 }
 
-// export 
+

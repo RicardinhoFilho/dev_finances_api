@@ -1,4 +1,4 @@
-export function transalateData(brazilizanData: string){
+export function translateData(brazilizanData: string){
 
     let newDate:Date | String;
 
