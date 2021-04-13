@@ -17,7 +17,8 @@ export class Transations {
   async getEspecificTransactions(param: string) {
     try {
       let sql: string;
-      if (param.charCodeAt(1) != 0) {
+      let teste = (param.charCodeAt(0))//retorna pósção na tabela ASCII
+      if (teste>= 95) {//SE FOR O "_" ou maior retono a consulçta de ordenação, caso cotrário retorno a consulta de pesquisa por id
         sql = `SELECT * FROM finances ORDER BY ${param}`;
       } else {
         sql = `SELECT * FROM finances WHERE id=${param}`;
@@ -34,7 +35,9 @@ export class Transations {
 
   async getTransactionByTitle(title: string): Promise<object | string> {
     try {
+      console.log(title);
       const sql = `SELECT * FROM finances WHERE title='${title}'`;
+      //console.log(sql);
       const conn = await connect();
       const data = await conn.query(
         sql
@@ -65,7 +68,7 @@ export class Transations {
 
       const sql = defineSearchDateSql(date);
 
-      console.log(sql);
+      //console.log(sql);
 
       const conn = await connect();
       const data = await conn.query(
