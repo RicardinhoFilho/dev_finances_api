@@ -1,5 +1,6 @@
 import { connect } from "../database";
 import { Transation } from "../interfaces/transation.interface";
+import { defineSearchDateSql } from "../utils/defineSearchDateSql";
 
 export class Transations {
   async getTransactions(): Promise<object | string> {
@@ -16,7 +17,6 @@ export class Transations {
   async getEspecificTransactions(param: string) {
     try {
       let sql: string;
-      console.log(param);
       if (param.charCodeAt(1) != 0) {
         sql = `SELECT * FROM finances ORDER BY ${param}`;
       } else {
@@ -25,6 +25,52 @@ export class Transations {
 
       const conn = await connect();
       const data = await conn.query(sql);
+
+      return data[0];
+    } catch (err) {
+      return err.message;
+    }
+  }
+
+  async getTransactionByTitle(title: string): Promise<object | string> {
+    try {
+      const sql = `SELECT * FROM finances WHERE title='${title}'`;
+      const conn = await connect();
+      const data = await conn.query(
+        sql
+      );
+
+      return data[0];
+    } catch (err) {
+      return err.message;
+    }
+  }
+
+  async getTransactionByValue(value: number): Promise<object | string> {
+    try {
+      const sql = `SELECT * FROM finances WHERE _value=${value}`;
+      const conn = await connect();
+      const data = await conn.query(
+        sql
+      );
+
+      return data[0];
+    } catch (err) {
+      return err.message;
+    }
+  }
+
+  async getTransactionByDate(date: string): Promise<object | string> {
+    try {
+
+      const sql = defineSearchDateSql(date);
+
+      console.log(sql);
+
+      const conn = await connect();
+      const data = await conn.query(
+        sql
+      );
 
       return data[0];
     } catch (err) {

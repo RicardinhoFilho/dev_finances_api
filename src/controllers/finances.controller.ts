@@ -17,6 +17,32 @@ export class TransactionsController {
     return res.status(200).json(result);
   }
 
+  async getTransationsByTitle(req: Request, res: Response){
+    
+    const title = req.params.name; 
+    const transactions = new Transations();
+    const result = await transactions.getTransactionByTitle(title);
+    return res.status(200).json(result);
+  }
+
+  async getTransationsByValue(req: Request, res: Response){
+    
+    const value = parseFloat(req.params.value); 
+    console.log(value);
+    const transactions = new Transations();
+    const result = await transactions.getTransactionByValue(value);
+    return res.status(200).json(result);
+  }
+
+  async getTransationsByDate(req: Request, res: Response){
+    
+    const date = req.params.date; 
+    const transactions = new Transations();
+    const result = await transactions.getTransactionByDate(date);
+    return res.status(200).json(result);
+  }
+
+
   async getEspecificTransactions(req: Request, res: Response): Promise<Response> {
     const param = req.params.param;
     const transactions = new Transations();

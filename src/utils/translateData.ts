@@ -9,3 +9,8 @@ export function translateData(brazilizanData: string){
     return newDate;
 
 }
+
+export function translateConfirmedData(data : string){
+
+    return data.split("/").reverse().join("-");
+}

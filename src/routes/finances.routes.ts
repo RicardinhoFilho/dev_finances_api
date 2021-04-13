@@ -6,6 +6,10 @@ const router = Router();
 
 router.route("/").get(transaction.getTransations);
 router.route("/:param").get(transaction.getEspecificTransactions);
+router.route("/title/:name").get(transaction.getTransationsByTitle);
+router.route("/value/:value").get(transaction.getTransationsByValue);
+router.route("/date/:date").get(transaction.getTransationsByDate);
+
 
 router.route("/").post(transaction.postTransation);
 
