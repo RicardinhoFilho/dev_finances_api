@@ -1,16 +1,17 @@
 import { connect } from "../database";
 import { Transation } from "../interfaces/transation.interface";
+import { changeStatus } from "../utils/changeStatus";
 import { defineSearchDateSql } from "../utils/defineSearchDateSql";
 
 export class Transations {
-  async getTransactions(): Promise<object | string> {
+  async getTransactions(): Promise<any> {
     const teste = "2";
     try {
       const conn = await connect();
       const data = await conn.query("SELECT * FROM finances");
-      return data[0];
+      return data;
     } catch (err) {
-      return err.message;
+      return changeStatus(err.message);;
     }
   }
 
@@ -24,18 +25,19 @@ export class Transations {
         sql = `SELECT * FROM finances WHERE id=${param}`;
       }
 
+      //console.log(sql);
       const conn = await connect();
       const data = await conn.query(sql);
 
-      return data[0];
+      return data;
     } catch (err) {
-      return err.message;
+      return changeStatus(err.message);
     }
   }
 
-  async getTransactionByTitle(title: string): Promise<object | string> {
+  async getTransactionByTitle(title: string): Promise<any> {
     try {
-      console.log(title);
+      //console.log(title);
       const sql = `SELECT * FROM finances WHERE title='${title}'`;
       //console.log(sql);
       const conn = await connect();
@@ -43,13 +45,13 @@ export class Transations {
         sql
       );
 
-      return data[0];
+      return data;
     } catch (err) {
-      return err.message;
+      return changeStatus(err.message);
     }
   }
 
-  async getTransactionByValue(value: number): Promise<object | string> {
+  async getTransactionByValue(value: number): Promise<any> {
     try {
       const sql = `SELECT * FROM finances WHERE _value=${value}`;
       const conn = await connect();
@@ -57,13 +59,13 @@ export class Transations {
         sql
       );
 
-      return data[0];
+      return data;
     } catch (err) {
-      return err.message;
+      return changeStatus(err.message);
     }
   }
 
-  async getTransactionByDate(date: string): Promise<object | string> {
+  async getTransactionByDate(date: string): Promise<any> {
     try {
 
       const sql = defineSearchDateSql(date);
@@ -75,13 +77,13 @@ export class Transations {
         sql
       );
 
-      return data[0];
+      return data;
     } catch (err) {
-      return err.message;
+      return changeStatus(err.message);;
     }
   }
 
-  async postTransaction(newTransaction: Transation): Promise<String> {
+  async postTransaction(newTransaction: Transation): Promise<any> {
     try {
       const conn = await connect();
       const sql = "INSERT INTO finances SET ? ";
@@ -89,24 +91,24 @@ export class Transations {
 
       return "Transaction add successfully";
     } catch (err) {
-      return err.message;
+      return changeStatus(err.message);;
     }
   }
 
-  async deleteTransaction(id: Number): Promise<String> {
+  async deleteTransaction(id: Number): Promise<any> {
     try {
       const conn = await connect();
       await conn.query(`DELETE FROM finances WHERE id=${id}`);
       return `Transaction ${id} deleted successfully!`;
     } catch (err) {
-      return err.message;
+      return changeStatus(err.message);;
     }
   }
 
   async updateTransation(
     id: Number,
     updatedTransaction: object
-  ): Promise<String> {
+  ): Promise<any> {
     try {
       const conn = await connect();
       await conn.query(`UPDATE finances SET ? WHERE id= ?`, [
@@ -115,7 +117,7 @@ export class Transations {
       ]);
       return `Transaction ${id} updated successfully!`;
     } catch (err) {
-      return err.message;
+      return changeStatus(err.message);;
     }
   }
 }

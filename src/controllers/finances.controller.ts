@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { translateData } from "../utils/translateData";
 import { verifyUpdates } from "../utils/verifyUpdates";
 import { Transations } from "../models/Transactions";
+import { getResponseStatus } from "../utils/getResponseStatus";
 
 export class TransactionsController {
   async showTransations(req: Request, res: Response): Promise<Response> {
@@ -14,7 +15,8 @@ export class TransactionsController {
 
     const transactions = new Transations();
     const result = await transactions.getTransactions();
-    return res.status(200).json(result);
+    const status =getResponseStatus(result);
+    return res.status(status).json(result[0]);
   }
 
   async getTransationsByTitle(req: Request, res: Response){
@@ -22,7 +24,8 @@ export class TransactionsController {
     const title = req.params.name; 
     const transactions = new Transations();
     const result = await transactions.getTransactionByTitle(title);
-    return res.status(200).json(result);
+    const status =getResponseStatus(result);
+    return res.status(status).json(result[0]);
   }
 
   async getTransationsByValue(req: Request, res: Response){
@@ -31,7 +34,8 @@ export class TransactionsController {
     console.log(value);
     const transactions = new Transations();
     const result = await transactions.getTransactionByValue(value);
-    return res.status(200).json(result);
+    const status =getResponseStatus(result);
+    return res.status(status).json(result[0]);
   }
 
   async getTransationsByDate(req: Request, res: Response){
@@ -39,7 +43,8 @@ export class TransactionsController {
     const date = req.params.date; 
     const transactions = new Transations();
     const result = await transactions.getTransactionByDate(date);
-    return res.status(200).json(result);
+    const status =getResponseStatus(result);
+    return res.status(status).json(result[0]);
   }
 
 
@@ -47,7 +52,8 @@ export class TransactionsController {
     const param = req.params.param;
     const transactions = new Transations();
     const result = await transactions.getEspecificTransactions(param);
-    return res.status(200).json(result);
+    const status =getResponseStatus(result);
+    return res.status(status).json(result[0]);
   }
 
   async postTransation(req: Request, res: Response) {
@@ -57,7 +63,8 @@ export class TransactionsController {
     const transactions = new Transations();
     const result = await transactions.postTransaction(req.body);
 
-    return res.status(200).json(result);
+    const status =getResponseStatus(result);
+    return res.status(status).json(result[0]);
   }
 
   async deleteTransation(req: Request, res: Response) {
@@ -66,7 +73,8 @@ export class TransactionsController {
 
     const result = await transactions.deleteTransaction(id);
 
-    res.status(200).json(result);
+    const status =getResponseStatus(result);
+    return res.status(status).json(result);
   }
 
   async updateTransation(req: Request, res: Response) {
@@ -76,9 +84,8 @@ export class TransactionsController {
     const validupdatedTransaction = verifyUpdates(updatedTransaction);
 
     const result = await transactions.updateTransation(id, updatedTransaction );
-
-    return res.status(200).json(result);
-
+    const status =getResponseStatus(result);
+    return res.status(status).json(result);
   }
 }
 
