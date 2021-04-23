@@ -1,4 +1,5 @@
 import express, {Application} from 'express';
+import cors from "cors";
 
 //ROUTES
 import IndexRoutes  from './routes/index.routes'
@@ -16,12 +17,13 @@ export class App{
     }
 
     settings(){
-        this.app.set('port', this.port || process.env.PORT || 3000);
+        this.app.set('port', this.port || process.env.PORT || 3333);
     }
 
     middlewares(){
         this.app.use(express.urlencoded({extended:false}));
         this.app.use(express.json());
+        this.app.use(cors())
     }
 
     async listen(){
