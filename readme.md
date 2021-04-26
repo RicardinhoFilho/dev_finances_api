@@ -49,7 +49,7 @@
 <h3 style="text-align: center;">Delete Transactions</h3>
 <p style="text-align: center;">http://localhost:8000/transactions/32</p>
 <img style="margin-left: 15%;" src="./.github/Delete.png" alt="Post">
-</br></br></br>
+</br></br></br> 
 <h2>📝 How to Use</h2>
 <p>
 <ol>
